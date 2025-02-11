@@ -1,0 +1,44 @@
+groups:
+  - name: Node_Exporter
+    rules:
+      - alert: Node_Exporter
+        expr: up == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "NodeExporter {{ $labels.instance }} down"
+          description: "Server {{ $labels.instance }} has been down for more than 1 minute."
+
+  - name: Cpu_Alerts
+    rules:
+      - alert: High_CPU_Usage
+        expr: (100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)) > 80
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Высокая загрузка CPU на сервере {{ $labels.instance }}"
+          description: "Процент загрузки CPU превышает 80% в течение 5 минут."
+
+  - name: Disk_Alerts
+    rules:
+      - alert: HighDiskUsage
+        expr: (1 - (node_filesystem_avail_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"})) * 100 > 95
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Диск переполнен на сервере {{ $labels.instance }}"
+          description: "Использовано более 95% дискового пространства."
+
+  - name: Memory_Alerts
+    rules:
+      - alert: HighMemoryUsage
+        expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 90
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Высокая загрузка памяти на сервере {{ $labels.instance }}"
+          description: "ОЗУ использовано более чем на 90%."
