@@ -8,8 +8,8 @@ receivers:
   - name: 'mail'
     email_configs:
       - smarthost: smtp.gmail.com:587
-        auth_username: 'stendton@gmail.com'
-        auth_password: "zagrwrpibcltxfqw"
+        auth_username: ${SMTP_USERNAME}
+        auth_password: ${SMTP_PASSWORD}
         send_resolved: true
-        from: 'stendton@gmail.com'
-        to: 'stendton@gmail.com'
+        from: ${SMTP_FROM}
+        to: ${SMTP_TO}

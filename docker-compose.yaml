@@ -34,6 +34,8 @@ services:
     volumes:
       - "./alertmanager:/config"
       - alertmanager-data:/data
+    env_file:
+      - .env
     command: --config.file=/config/alertmanager.yml --log.level=debug
 
   promtail:
