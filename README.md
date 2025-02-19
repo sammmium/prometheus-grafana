@@ -12,7 +12,7 @@ Project structure:
 └── README.md
 ```
 
-[_compose.yaml_](compose.yaml)
+[_compose.yaml_](docker-compose.yaml)
 ```
 services:
   prometheus:

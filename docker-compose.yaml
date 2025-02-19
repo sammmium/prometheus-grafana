@@ -36,6 +36,25 @@ services:
       - alertmanager-data:/data
     command: --config.file=/config/alertmanager.yml --log.level=debug
 
+  promtail:
+    image: grafana/promtail:latest
+    volumes:
+      - ./promtail/promtail.yaml:/etc/promtail/docker-config.yaml
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: -config.file=/etc/promtail/docker-config.yaml
+    depends_on:
+      - loki
+
+  loki:
+    image: grafana/loki:latest
+    container_name: loki
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+
+
+
 volumes:
   prom_data:
   alertmanager-data:
